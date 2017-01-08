@@ -1,6 +1,6 @@
 package com.davidjeong.recpreadytocookandprepare;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +21,7 @@ public class ListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         OnRecipeSelectedInterface listener = (OnRecipeSelectedInterface) getActivity();
         View view = inflater.inflate(R.layout.fragment_list, container, false);
+        getActivity().setTitle(getResources().getString(R.string.app_name));
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.listRecyclerView);
         ListAdapter listAdapter = new ListAdapter(listener);
