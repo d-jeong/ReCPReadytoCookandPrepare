@@ -9,39 +9,47 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
-public class IngredientsFragment extends Fragment {
+public class CheckBoxesFragment extends Fragment {
     private static final String KEY_CHECKED_BOXES = "key_checked_boxes";
     private CheckBox[] mCheckBoxes;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_ingredients, container, false);
+        View view = inflater.inflate(R.layout.fragment_checkboxes, container, false);
         int index = getArguments().getInt(ViewPagerFragment.KEY_RECIPE_INDEX);
+        boolean isIngredients = getArguments().getBoolean(ViewPagerFragment.IS_INGREDIENTS);
 
-        LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.ingredientsLayout);
-        String[] ingredients = Recipes.ingredients[index].split("`");
+        LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.checkBoxesLayout);
 
-        mCheckBoxes = new CheckBox[ingredients.length];
+        String[] items;
+        if (isIngredients) {
+            items = Recipes.ingredients[index].split("`");
+        }
+        else {
+            items = Recipes.directions[index].split("`");
+        }
+
+        mCheckBoxes = new CheckBox[items.length];
         boolean[] checkedBoxes = new boolean[mCheckBoxes.length];
         if (savedInstanceState != null && savedInstanceState.getBooleanArray(KEY_CHECKED_BOXES) != null) {
             checkedBoxes = savedInstanceState.getBooleanArray(KEY_CHECKED_BOXES);
         }
 
 
-        setUpCheckBoxes(linearLayout, ingredients, checkedBoxes);
+        setUpCheckBoxes(linearLayout, items, checkedBoxes);
 
         return view;
     }
 
-    private void setUpCheckBoxes(ViewGroup container, String[] ingredients, boolean[] checkedBoxes) {
+    private void setUpCheckBoxes(ViewGroup container, String[] items, boolean[] checkedBoxes) {
         int i = 0;
 
-        for (String ingredient : ingredients) {
+        for (String item : items) {
             mCheckBoxes[i] = new CheckBox(getActivity());
             mCheckBoxes[i].setPadding(8, 16, 8, 16);
             mCheckBoxes[i].setTextSize(20f);
-            mCheckBoxes[i].setText(ingredient);
+            mCheckBoxes[i].setText(item);
             container.addView(mCheckBoxes[i]);
 
             if (checkedBoxes[i]) {
